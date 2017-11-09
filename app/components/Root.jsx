@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SingleChannel from './SingleChannel'
 import Chat from './Chat'
+import RaisedButton from 'material-ui/RaisedButton'
+import SearchChannels from './SearchChannels'
 
 const channels = ['ninja', 'drdisrespectlive', 'timthetatman']
 
@@ -21,7 +23,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <div style={{display: 'flex'}}>
+      <div>
+      <SearchChannels channels={channels} />
+      <div style={{display: 'flex', flexDirection: 'row'}}>
         <div>
         {this.state.channels.map(channel => {
           return (
@@ -32,6 +36,7 @@ export default class App extends Component {
         })}
         </div>
         <Chat currentChat={this.state.currentChat}/>
+      </div>
       </div>
     )
   }
