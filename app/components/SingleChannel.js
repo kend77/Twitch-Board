@@ -12,7 +12,6 @@ export default class SingleChannel extends Component {
 
   render() {
     return (
-      <div>
         <iframe
           src={`http://player.twitch.tv/?channel=${this.props.channel}&muted=true`}
           height="480"
@@ -22,7 +21,6 @@ export default class SingleChannel extends Component {
           allowfullscreen="true"
           >
         </iframe>
-      </div>
     )
   }
 }
