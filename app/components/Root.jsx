@@ -5,33 +5,49 @@ import RaisedButton from 'material-ui/RaisedButton'
 import SearchChannels from './SearchChannels'
 import axios from 'axios'
 
-const channels = ['timthetatman']
-// ,'drdisrespectlive', 'ninja'
 
 export default class App extends Component {
   constructor() {
     super()
     this.state = {
-      channels: channels,
+      activeChannels: [],
+      allChannels: [],
       currentChat: ''
     }
+    this.handleAddStreamer = this.handleAddStreamer.bind(this)
   }
 
   componentDidMount() {
-    axios.get
-    this.setState({currentChat: this.state.channels[0]})
+    axios.get('/api/streamers')
+      .then(res => res.data)
+      .then(results => {
+        const streamers = results.data.map(streamer => {
+          return streamer.login
+        })
+        this.setState({allChannels: streamers})
+      })
+  }
+
+  handleAddStreamer(streamer) {
+    if(this.state.activeChannels.length === 0) {
+    this.setState({activeChannels: [...this.state.activeChannels, streamer],
+    currentChat: streamer})
+    } else {
+      this.setState({activeChannels: [...this.state.activeChannels, streamer]})
+    }
   }
 
 
   render() {
     return (
       <div>
-      <SearchChannels channels={channels} />
-      <div style={{display: 'flex', justifyContent: "flex-start", width: "100%"}}>
-        <div>
-        {this.state.channels.map(channel => {
+      <SearchChannels addStream={this.handleAddStreamer} channels={this.state.allChannels} activeChannels={this.state.activeChannels} />
+      {this.state.activeChannels.length ?
+      <div style={{display: 'flex', justifyContent: "flex-right", width: "100%"}}>
+        <div width="75%">
+        {this.state.activeChannels.map((channel, index) => {
           return (
-            <div className="channel">
+            <div key={index} className="channel">
               <button onClick={() => this.setState({currentChat: channel})}>
                 <SingleChannel channel={channel} />
               </button>
@@ -39,8 +55,11 @@ export default class App extends Component {
           )
         })}
         </div>
-        <Chat currentChat={this.state.currentChat}/>
-      </div>
+        <div id="chat" width="25%">
+          <Chat currentChat={this.state.currentChat}/>
+        </div>
+      </div> : <h1 id="welcome">Welcome To Twitch Board</h1>
+      }
       </div>
     )
   }

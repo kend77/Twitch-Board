@@ -9,11 +9,11 @@ export default class Chat extends Component {
     return (
       <div>
         <iframe
-          frameborder='0'
+          frameBorder='0'
           scrolling="no"
           id="chat_embed"
           src={`http://www.twitch.tv/${this.props.currentChat}/chat`}
-          height="700"
+          height="650"
           width="500"
           >
         </iframe>

@@ -1,5 +1,3 @@
-import { userInfo } from 'os';
-
 const streamers = require('express').Router()
 const axios = require('axios')
 
@@ -22,10 +20,9 @@ streamers.get('/', (req, res, next) => {
         }
       }
       axios.get('https://api.twitch.tv/helix/users?' + streamers, UserConfig)
+        .then(res => res.data)
+        .then(streamerInfo => res.json(streamerInfo))
     })
-
-
-
 })
 
 

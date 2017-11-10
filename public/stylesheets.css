@@ -1,8 +1,28 @@
 body {
-  box-sizing: border-box
+  box-sizing: border-box;
+  font-family: 'Roboto';
+  background-color: rgb(250, 249, 250)
 }
 
+#welcome {
+  display: flex;
+  justify-content: center;
+}
+#search {
+  box-sizing: border-box;
+  margin-bottom: 2em;
+}
+
+#heading {
+  margin-right: 2em;
+}
 
 .channel {
-  margin-bottom: 100px;
+  margin-bottom: 1em;
+}
+
+#chat {
+  margin-left: 1em;
+  height: 100px;
+  position: sticky;
 }

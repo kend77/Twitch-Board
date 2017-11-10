@@ -16794,6 +16794,8 @@ var _reactDom = __webpack_require__(19);
 
 var _reactRedux = __webpack_require__(313);
 
+var _colors = __webpack_require__(72);
+
 var _MuiThemeProvider = __webpack_require__(346);
 
 var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
@@ -16816,12 +16818,18 @@ var _Root2 = _interopRequireDefault(_Root);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var muiTheme = (0, _getMuiTheme2.default)({
+  palette: {
+    textColor: _colors.purple900
+  }
+});
+
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
   { store: _store2.default },
   _react2.default.createElement(
     _MuiThemeProvider2.default,
-    null,
+    { muiTheme: (0, _getMuiTheme2.default)(muiTheme) },
     _react2.default.createElement(_Root2.default, null)
   )
 ), document.getElementById('main'));
@@ -39472,14 +39480,13 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var channels = ['timthetatman'];
-// ,'drdisrespectlive', 'ninja'
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -39490,48 +39497,76 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
     _this.state = {
-      channels: channels,
+      activeChannels: [],
+      allChannels: [],
       currentChat: ''
     };
+    _this.handleAddStreamer = _this.handleAddStreamer.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _axios2.default.get;
-      this.setState({ currentChat: this.state.channels[0] });
+      var _this2 = this;
+
+      _axios2.default.get('/api/streamers').then(function (res) {
+        return res.data;
+      }).then(function (results) {
+        var streamers = results.data.map(function (streamer) {
+          return streamer.login;
+        });
+        _this2.setState({ allChannels: streamers });
+      });
+    }
+  }, {
+    key: 'handleAddStreamer',
+    value: function handleAddStreamer(streamer) {
+      if (this.state.activeChannels.length === 0) {
+        this.setState({ activeChannels: [].concat(_toConsumableArray(this.state.activeChannels), [streamer]),
+          currentChat: streamer });
+      } else {
+        this.setState({ activeChannels: [].concat(_toConsumableArray(this.state.activeChannels), [streamer]) });
+      }
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_SearchChannels2.default, { channels: channels }),
-        _react2.default.createElement(
+        _react2.default.createElement(_SearchChannels2.default, { addStream: this.handleAddStreamer, channels: this.state.allChannels, activeChannels: this.state.activeChannels }),
+        this.state.activeChannels.length ? _react2.default.createElement(
           'div',
-          { style: { display: 'flex', justifyContent: "flex-start", width: "100%" } },
+          { style: { display: 'flex', justifyContent: "flex-right", width: "100%" } },
           _react2.default.createElement(
             'div',
-            null,
-            this.state.channels.map(function (channel) {
+            { width: '75%' },
+            this.state.activeChannels.map(function (channel, index) {
               return _react2.default.createElement(
                 'div',
-                { className: 'channel' },
+                { key: index, className: 'channel' },
                 _react2.default.createElement(
                   'button',
                   { onClick: function onClick() {
-                      return _this2.setState({ currentChat: channel });
+                      return _this3.setState({ currentChat: channel });
                     } },
                   _react2.default.createElement(_SingleChannel2.default, { channel: channel })
                 )
               );
             })
           ),
-          _react2.default.createElement(_Chat2.default, { currentChat: this.state.currentChat })
+          _react2.default.createElement(
+            'div',
+            { id: 'chat', width: '25%' },
+            _react2.default.createElement(_Chat2.default, { currentChat: this.state.currentChat })
+          )
+        ) : _react2.default.createElement(
+          'h1',
+          { id: 'welcome' },
+          'Welcome To Twitch Board'
         )
       );
     }
@@ -39584,11 +39619,11 @@ var SingleChannel = function (_Component) {
     value: function render() {
       return _react2.default.createElement("iframe", {
         src: "http://player.twitch.tv/?channel=" + this.props.channel + "&muted=true",
-        height: "480",
-        width: "854",
-        frameborder: "0",
+        height: "500",
+        width: "890",
+        frameBorder: "0",
         scrolling: "no",
-        allowfullscreen: "true"
+        allowFullScreen: "true"
       });
     }
   }]);
@@ -39639,11 +39674,11 @@ var Chat = function (_Component) {
         'div',
         null,
         _react2.default.createElement('iframe', {
-          frameborder: '0',
+          frameBorder: '0',
           scrolling: 'no',
           id: 'chat_embed',
           src: 'http://www.twitch.tv/' + this.props.currentChat + '/chat',
-          height: '700',
+          height: '650',
           width: '500'
         })
       );
@@ -41550,12 +41585,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var SearchChannels = function SearchChannels(props) {
   return _react2.default.createElement(
     'div',
-    null,
+    { id: 'search', style: { display: 'flex', 'justifyContent': 'space-between' } },
     _react2.default.createElement(_AutoComplete2.default, {
+      onNewRequest: function onNewRequest(value) {
+        return props.addStream(value);
+      },
       hintText: 'search streamers...',
       dataSource: props.channels
     }),
-    _react2.default.createElement('br', null)
+    _react2.default.createElement('br', null),
+    props.activeChannels.length ? _react2.default.createElement(
+      'h2',
+      { id: 'heading' },
+      'Twitch Board'
+    ) : ''
   );
 };
 
