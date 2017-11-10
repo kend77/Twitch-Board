@@ -1,16 +1,20 @@
 body {
   box-sizing: border-box;
   font-family: 'Roboto';
-  background-color: rgb(250, 249, 250)
+  background-color: rgb(250, 249, 250);
+  color: rgb(95, 65, 176)
 }
 
 #welcome {
   display: flex;
   justify-content: center;
+  font-size: 6em;
+  text-align: center;
 }
 #search {
   box-sizing: border-box;
-  margin-bottom: 2em;
+  margin-bottom: 0em;
+  font-size: 1.2em;
 }
 
 #heading {

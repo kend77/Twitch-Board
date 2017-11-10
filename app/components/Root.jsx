@@ -24,8 +24,10 @@ export default class App extends Component {
         const streamers = results.data.map(streamer => {
           return streamer.login
         })
+        console.log(streamers)
         this.setState({allChannels: streamers})
       })
+      .catch(err => console.error(err))
   }
 
   handleAddStreamer(streamer) {

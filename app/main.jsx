@@ -2,7 +2,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import { Provider } from 'react-redux'
-import { purple900 } from 'material-ui/styles/colors'
+import { deepPurple500 } from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
@@ -12,7 +12,7 @@ import Root from './components/Root'
 
 const muiTheme = getMuiTheme({
   palette: {
-    textColor: purple900,
+    textColor: deepPurple500,
   }
 });
 
