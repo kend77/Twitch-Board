@@ -15,7 +15,7 @@ export default class SingleChannel extends Component {
     return (
       <div>
         <iframe
-          src={`http://player.twitch.tv/?channel=${this.props.channel}&muted=true`}
+          src={`http://player.twitch.tv/?channel=${this.props.channel}&muted=${this.props.muted}`}
           height="500"
           width="890"
           frameBorder="0"
@@ -25,17 +25,20 @@ export default class SingleChannel extends Component {
         </iframe>
         <div style={{display: 'flex', justifyContent: 'center'}}>
         <div>
-          <FloatingActionButton id="button" backgroundColor={grey600}>
+          <FloatingActionButton
+            onClick={() => this.props.removeChannel(this.props.channel)}
+            backgroundColor={grey600}>
             <ContentRemove />
           </FloatingActionButton>
         </div>
-          <FloatingActionButton backgroundColor={deepPurple500}>
+          <FloatingActionButton className="add-button"
+          onClick={() => this.props.changeChat(this.props.channel)}
+          backgroundColor={deepPurple500}
+          >
           <ContentAdd />
           </FloatingActionButton>
-        <h4>Activate Lul's</h4>
+        <h4 className="chat-toggle-heading">Activate Lul's</h4>
         </div>
-
-
       </div>
     )
   }

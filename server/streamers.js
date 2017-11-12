@@ -11,7 +11,6 @@ streamers.get('/', (req, res, next) => {
       axios.get('https://api.twitch.tv/helix/users/follows?from_id=116145701&after=eyJiIjpudWxsLCJhIjoiMTQ1Njc2OTI2NjkxNTU1NjAwMCJ9', config)
         .then(results2 => {
           const data = [...results1.data.data, ...results2.data.data]
-          console.log(data)
           const streamers = data.map(result => {
             return `id=${result['to_id']}`
           }).join('&')

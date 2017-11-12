@@ -5,15 +5,16 @@ export default class Chat extends Component {
     super(props)
   }
 
+
   render() {
     return (
       <div>
         <iframe
           frameBorder='0'
-          scrolling="no"
+          scrolling="yes"
           id="chat_embed"
           src={`http://www.twitch.tv/${this.props.currentChat}/chat`}
-          height="650"
+          height="563"
           width="500"
           >
         </iframe>

@@ -25,8 +25,16 @@ body {
   margin-bottom: 1em;
 }
 
-#chat {
+.chat {
   margin-left: 1em;
   height: 100px;
   position: sticky;
+}
+
+.chat-toggle-heading {
+  margin-left: 1em;
+}
+
+.add-button {
+  margin-left: 1em;
 }

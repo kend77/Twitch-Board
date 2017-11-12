@@ -4,6 +4,7 @@ import Chat from './Chat'
 import RaisedButton from 'material-ui/RaisedButton'
 import SearchChannels from './SearchChannels'
 import axios from 'axios'
+import { win32 } from 'path';
 
 
 export default class App extends Component {
@@ -15,6 +16,8 @@ export default class App extends Component {
       currentChat: ''
     }
     this.handleAddStreamer = this.handleAddStreamer.bind(this)
+    this.handleRemoveStreamer = this.handleRemoveStreamer.bind(this)
+    this.changeChat = this.changeChat.bind(this)
   }
 
   componentDidMount() {
@@ -24,11 +27,11 @@ export default class App extends Component {
         const streamers = results.data.map(streamer => {
           return streamer.login
         })
-        console.log(streamers)
         this.setState({allChannels: streamers})
       })
       .catch(err => console.error(err))
   }
+
 
   handleAddStreamer(streamer) {
     if(this.state.activeChannels.length === 0) {
@@ -39,25 +42,52 @@ export default class App extends Component {
     }
   }
 
+  handleRemoveStreamer(streamer) {
+    const remainingChannels = this.state.activeChannels.filter(channel => {
+    return channel !== streamer
+    })
+
+    if(streamer === this.state.activeChannels[0]) {
+      this.setState({
+        activeChannels: remainingChannels,
+        currentChat: this.state.activeChannels[1]
+      })
+    }
+
+    this.setState({
+      activeChannels: remainingChannels
+    })
+  }
+
+
+  changeChat(channel) {
+    this.setState({currentChat: channel})
+  }
+
 
   render() {
     return (
       <div>
       <SearchChannels addStream={this.handleAddStreamer} channels={this.state.allChannels} activeChannels={this.state.activeChannels} />
       {this.state.activeChannels.length ?
-      <div style={{display: 'flex', justifyContent: "flex-right", width: "100%"}}>
-        <div width="75%">
+      <div style={{display: 'flex', justifyContent: "flex-right", width: "100vw"}}>
+        <div width="75vw">
         {this.state.activeChannels.map((channel, index) => {
+          let muted = true
+          if(index === 0) muted = false
           return (
             <div key={index} className="channel">
-              <button onClick={() => this.setState({currentChat: channel})}>
-                <SingleChannel channel={channel} />
-              </button>
+                <SingleChannel
+                muted={muted}
+                changeChat={this.changeChat}
+                removeChannel={this.handleRemoveStreamer}
+                channel={channel}
+                />
             </div>
           )
         })}
         </div>
-        <div id="chat" width="25%">
+        <div className="chat" width="25vw">
           <Chat currentChat={this.state.currentChat}/>
         </div>
       </div> : <h1 id="welcome">Welcome To Twitch Board</h1>
