@@ -39530,7 +39530,9 @@ var _axios = __webpack_require__(493);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _path = __webpack_require__(512);
+var _Chip = __webpack_require__(513);
+
+var _Chip2 = _interopRequireDefault(_Chip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39541,6 +39543,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  chip: {
+    margin: 4
+  }
+};
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -39625,6 +39633,23 @@ var App = function (_Component) {
           _react2.default.createElement(
             'div',
             { width: '75vw' },
+            _react2.default.createElement(
+              'div',
+              { id: 'chips' },
+              this.state.activeChannels.map(function (channel, index) {
+                return _react2.default.createElement(
+                  _Chip2.default,
+                  {
+                    key: index,
+                    onRequestDelete: function onRequestDelete() {
+                      return _this3.handleRemoveStreamer(channel);
+                    },
+                    style: styles.chip
+                  },
+                  channel
+                );
+              })
+            ),
             this.state.activeChannels.map(function (channel, index) {
               var muted = true;
               if (index === 0) muted = false;
@@ -39640,11 +39665,7 @@ var App = function (_Component) {
               );
             })
           ),
-          _react2.default.createElement(
-            'div',
-            { className: 'chat', width: '25vw' },
-            _react2.default.createElement(_Chat2.default, { currentChat: this.state.currentChat })
-          )
+          _react2.default.createElement(_Chat2.default, { currentChat: this.state.currentChat })
         ) : _react2.default.createElement(
           'h1',
           { id: 'welcome' },
@@ -39714,8 +39735,9 @@ var SingleChannel = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'single-channel' },
         _react2.default.createElement('iframe', {
+          id: this.props.channel,
           src: 'http://player.twitch.tv/?channel=' + this.props.channel + '&muted=' + this.props.muted,
           height: '500',
           width: '890',
@@ -42070,6 +42092,12 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _RaisedButton = __webpack_require__(461);
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+var _colors = __webpack_require__(46);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42077,6 +42105,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var style = {
+  margin: 12
+};
 
 var Chat = function (_Component) {
   _inherits(Chat, _Component);
@@ -42092,13 +42124,14 @@ var Chat = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'chat' },
+        _react2.default.createElement(_RaisedButton2.default, { label: 'Mute All', backgroundColor: _colors.grey600, labelColor: 'white', style: style }),
         _react2.default.createElement('iframe', {
           frameBorder: '0',
           scrolling: 'yes',
           id: 'chat_embed',
           src: 'http://www.twitch.tv/' + this.props.currentChat + '/chat',
-          height: '563',
+          height: '523',
           width: '500'
         })
       );
@@ -42658,7 +42691,6 @@ var SearchChannels = function SearchChannels(props) {
       hintText: 'search streamers...',
       dataSource: props.channels
     }),
-    _react2.default.createElement('br', null),
     props.activeChannels.length ? _react2.default.createElement(
       'h2',
       { id: 'heading' },
@@ -48840,235 +48872,422 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 512 */
+/* 512 */,
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
+"use strict";
 
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _Chip = __webpack_require__(514);
+
+var _Chip2 = _interopRequireDefault(_Chip);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _Chip2.default;
+
+/***/ }),
+/* 514 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends2 = __webpack_require__(14);
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _objectWithoutProperties2 = __webpack_require__(12);
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _getPrototypeOf = __webpack_require__(9);
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = __webpack_require__(6);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(7);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(10);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(11);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _simpleAssign = __webpack_require__(8);
+
+var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _keycode = __webpack_require__(118);
+
+var _keycode2 = _interopRequireDefault(_keycode);
+
+var _colorManipulator = __webpack_require__(51);
+
+var _EnhancedButton = __webpack_require__(75);
+
+var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
+
+var _cancel = __webpack_require__(515);
+
+var _cancel2 = _interopRequireDefault(_cancel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function getStyles(props, context, state) {
+  var chip = context.muiTheme.chip;
+
+
+  var backgroundColor = props.backgroundColor || chip.backgroundColor;
+  var focusColor = (0, _colorManipulator.emphasize)(backgroundColor, 0.08);
+  var pressedColor = (0, _colorManipulator.emphasize)(backgroundColor, 0.12);
+
+  return {
+    avatar: {
+      marginRight: -4
+    },
+    deleteIcon: {
+      color: state.deleteHovered ? (0, _colorManipulator.fade)(chip.deleteIconColor, 0.4) : chip.deleteIconColor,
+      cursor: 'pointer',
+      margin: '4px 4px 0px -8px'
+    },
+    label: {
+      color: props.labelColor || chip.textColor,
+      fontSize: chip.fontSize,
+      fontWeight: chip.fontWeight,
+      lineHeight: '32px',
+      paddingLeft: 12,
+      paddingRight: 12,
+      userSelect: 'none',
+      whiteSpace: 'nowrap'
+    },
+    root: {
+      backgroundColor: state.clicked ? pressedColor : state.focused || state.hovered ? focusColor : backgroundColor,
+      borderRadius: 16,
+      boxShadow: state.clicked ? chip.shadow : null,
+      cursor: props.onClick ? 'pointer' : 'default',
+      display: 'flex',
+      whiteSpace: 'nowrap',
+      width: 'fit-content'
     }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
+  };
 }
 
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
+var Chip = function (_Component) {
+  (0, _inherits3.default)(Chip, _Component);
 
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
+  function Chip() {
+    var _ref;
 
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
+    var _temp, _this, _ret;
 
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
+    (0, _classCallCheck3.default)(this, Chip);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
+    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = Chip.__proto__ || (0, _getPrototypeOf2.default)(Chip)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      clicked: false,
+      deleteHovered: false,
+      focused: false,
+      hovered: false
+    }, _this.handleBlur = function (event) {
+      _this.setState({ clicked: false, focused: false });
+      _this.props.onBlur(event);
+    }, _this.handleFocus = function (event) {
+      if (_this.props.onClick || _this.props.onRequestDelete) {
+        _this.setState({ focused: true });
+      }
+      _this.props.onFocus(event);
+    }, _this.handleKeyboardFocus = function (event, keyboardFocused) {
+      if (keyboardFocused) {
+        _this.handleFocus();
+        _this.props.onFocus(event);
+      } else {
+        _this.handleBlur();
+      }
+
+      _this.props.onKeyboardFocus(event, keyboardFocused);
+    }, _this.handleKeyDown = function (event) {
+      if ((0, _keycode2.default)(event) === 'backspace') {
+        event.preventDefault();
+        if (_this.props.onRequestDelete) {
+          _this.props.onRequestDelete(event);
+        }
+      }
+      _this.props.onKeyDown(event);
+    }, _this.handleMouseDown = function (event) {
+      // Only listen to left clicks
+      if (event.button === 0) {
+        event.stopPropagation();
+        if (_this.props.onClick) {
+          _this.setState({ clicked: true });
+        }
+      }
+      _this.props.onMouseDown(event);
+    }, _this.handleMouseEnter = function (event) {
+      if (_this.props.onClick) {
+        _this.setState({ hovered: true });
+      }
+      _this.props.onMouseEnter(event);
+    }, _this.handleMouseEnterDeleteIcon = function () {
+      _this.setState({ deleteHovered: true });
+    }, _this.handleMouseLeave = function (event) {
+      _this.setState({
+        clicked: false,
+        hovered: false
+      });
+      _this.props.onMouseLeave(event);
+    }, _this.handleMouseLeaveDeleteIcon = function () {
+      _this.setState({ deleteHovered: false });
+    }, _this.handleMouseUp = function (event) {
+      _this.setState({ clicked: false });
+      _this.props.onMouseUp(event);
+    }, _this.handleTouchTapDeleteIcon = function (event) {
+      // Stop the event from bubbling up to the `Chip`
+      event.stopPropagation();
+      _this.props.onRequestDelete(event);
+    }, _this.handleTouchEnd = function (event) {
+      _this.setState({ clicked: false });
+      _this.props.onTouchEnd(event);
+    }, _this.handleTouchStart = function (event) {
+      event.stopPropagation();
+      if (_this.props.onClick) {
+        _this.setState({ clicked: true });
+      }
+      _this.props.onTouchStart(event);
+    }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
   }
 
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
+  (0, _createClass3.default)(Chip, [{
+    key: 'render',
+    value: function render() {
+      var buttonEventHandlers = {
+        onBlur: this.handleBlur,
+        onFocus: this.handleFocus,
+        onKeyDown: this.handleKeyDown,
+        onMouseDown: this.handleMouseDown,
+        onMouseEnter: this.handleMouseEnter,
+        onMouseLeave: this.handleMouseLeave,
+        onMouseUp: this.handleMouseUp,
+        onTouchEnd: this.handleTouchEnd,
+        onTouchStart: this.handleTouchStart,
+        onKeyboardFocus: this.handleKeyboardFocus
+      };
 
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
+      var prepareStyles = this.context.muiTheme.prepareStyles;
 
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
+      var styles = getStyles(this.props, this.context, this.state);
 
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
+      var _props = this.props,
+          childrenProp = _props.children,
+          containerElement = _props.containerElement,
+          style = _props.style,
+          className = _props.className,
+          deleteIconStyle = _props.deleteIconStyle,
+          labelStyle = _props.labelStyle,
+          labelColor = _props.labelColor,
+          backgroundColor = _props.backgroundColor,
+          onRequestDelete = _props.onRequestDelete,
+          other = (0, _objectWithoutProperties3.default)(_props, ['children', 'containerElement', 'style', 'className', 'deleteIconStyle', 'labelStyle', 'labelColor', 'backgroundColor', 'onRequestDelete']);
 
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
 
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
+      var deletable = this.props.onRequestDelete;
+      var avatar = null;
 
-  return (isAbsolute ? '/' : '') + path;
-};
+      var deleteIcon = deletable ? _react2.default.createElement(_cancel2.default, {
+        color: styles.deleteIcon.color,
+        style: (0, _simpleAssign2.default)(styles.deleteIcon, deleteIconStyle),
+        onClick: this.handleTouchTapDeleteIcon,
+        onMouseEnter: this.handleMouseEnterDeleteIcon,
+        onMouseLeave: this.handleMouseLeaveDeleteIcon
+      }) : null;
 
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
+      var children = childrenProp;
+      var childCount = _react2.default.Children.count(children);
 
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
+      // If the first child is an avatar, extract it and style it
+      if (childCount > 1) {
+        children = _react2.default.Children.toArray(children);
+
+        if (_react2.default.isValidElement(children[0]) && children[0].type.muiName === 'Avatar') {
+          avatar = children.shift();
+
+          avatar = _react2.default.cloneElement(avatar, {
+            style: (0, _simpleAssign2.default)(styles.avatar, avatar.props.style),
+            size: 32
+          });
+        }
+      }
+
+      return _react2.default.createElement(
+        _EnhancedButton2.default,
+        (0, _extends3.default)({}, other, buttonEventHandlers, {
+          className: className,
+          containerElement: containerElement,
+          disableTouchRipple: true,
+          disableFocusRipple: true,
+          style: (0, _simpleAssign2.default)(styles.root, style)
+        }),
+        avatar,
+        _react2.default.createElement(
+          'span',
+          { style: prepareStyles((0, _simpleAssign2.default)(styles.label, labelStyle)) },
+          children
+        ),
+        deleteIcon
+      );
     }
-    return p;
-  }).join('/'));
+  }]);
+  return Chip;
+}(_react.Component);
+
+Chip.defaultProps = {
+  containerElement: 'div', // Firefox doesn't support nested buttons
+  onBlur: function onBlur() {},
+  onFocus: function onFocus() {},
+  onKeyDown: function onKeyDown() {},
+  onKeyboardFocus: function onKeyboardFocus() {},
+  onMouseDown: function onMouseDown() {},
+  onMouseEnter: function onMouseEnter() {},
+  onMouseLeave: function onMouseLeave() {},
+  onMouseUp: function onMouseUp() {},
+  onTouchEnd: function onTouchEnd() {},
+  onTouchStart: function onTouchStart() {}
 };
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
+Chip.contextTypes = { muiTheme: _propTypes2.default.object.isRequired };
+Chip.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * Override the background color of the chip.
+   */
+  backgroundColor: _propTypes2.default.string,
+  /**
+   * Used to render elements inside the Chip.
+   */
+  children: _propTypes2.default.node,
+  /**
+   * CSS `className` of the root element.
+   */
+  className: _propTypes2.default.node,
+  /**
+   * The element to use as the container for the Chip. Either a string to
+   * use a DOM element or a ReactElement.
+   */
+  containerElement: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.element]),
+  /**
+   * Override the inline-styles of the delete icon.
+   */
+  deleteIconStyle: _propTypes2.default.object,
+  /**
+   * Override the label color.
+   */
+  labelColor: _propTypes2.default.string,
+  /**
+   * Override the inline-styles of the label.
+   */
+  labelStyle: _propTypes2.default.object,
+  /** @ignore */
+  onBlur: _propTypes2.default.func,
+  /**
+   * Callback function fired when the `Chip` element is touch-tapped.
+   *
+   * @param {object} event TouchTap event targeting the element.
+   */
+  onClick: _propTypes2.default.func,
+  /** @ignore */
+  onFocus: _propTypes2.default.func,
+  /** @ignore */
+  onKeyDown: _propTypes2.default.func,
+  /** @ignore */
+  onKeyboardFocus: _propTypes2.default.func,
+  /** @ignore */
+  onMouseDown: _propTypes2.default.func,
+  /** @ignore */
+  onMouseEnter: _propTypes2.default.func,
+  /** @ignore */
+  onMouseLeave: _propTypes2.default.func,
+  /** @ignore */
+  onMouseUp: _propTypes2.default.func,
+  /**
+   * Callback function fired when the delete icon is clicked. If set, the delete icon will be shown.
+   * @param {object} event `click` event targeting the element.
+   */
+  onRequestDelete: _propTypes2.default.func,
+  /** @ignore */
+  onTouchEnd: _propTypes2.default.func,
+  /** @ignore */
+  onTouchStart: _propTypes2.default.func,
+  /**
+   * Override the inline-styles of the root element.
+   */
+  style: _propTypes2.default.object
+} : {};
+exports.default = Chip;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 515 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pure = __webpack_require__(62);
+
+var _pure2 = _interopRequireDefault(_pure);
+
+var _SvgIcon = __webpack_require__(63);
+
+var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NavigationCancel = function NavigationCancel(props) {
+  return _react2.default.createElement(
+    _SvgIcon2.default,
+    props,
+    _react2.default.createElement('path', { d: 'M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z' })
+  );
+};
+NavigationCancel = (0, _pure2.default)(NavigationCancel);
+NavigationCancel.displayName = 'NavigationCancel';
+NavigationCancel.muiName = 'SvgIcon';
+
+exports.default = NavigationCancel;
 
 /***/ })
 /******/ ]);

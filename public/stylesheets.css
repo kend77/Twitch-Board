@@ -17,6 +17,13 @@ body {
   font-size: 1.2em;
 }
 
+#chips {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: .75em;
+}
+
 #heading {
   margin-right: 2em;
 }
@@ -27,8 +34,6 @@ body {
 
 .chat {
   margin-left: 1em;
-  height: 100px;
-  position: sticky;
 }
 
 .chat-toggle-heading {
@@ -38,3 +43,8 @@ body {
 .add-button {
   margin-left: 1em;
 }
+
+.single-channel {
+  border-style: solid;
+}
+

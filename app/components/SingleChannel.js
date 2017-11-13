@@ -13,8 +13,9 @@ export default class SingleChannel extends Component {
 
   render() {
     return (
-      <div>
+      <div className="single-channel">
         <iframe
+          id={this.props.channel}
           src={`http://player.twitch.tv/?channel=${this.props.channel}&muted=${this.props.muted}`}
           height="500"
           width="890"

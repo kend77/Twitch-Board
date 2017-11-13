@@ -4,7 +4,13 @@ import Chat from './Chat'
 import RaisedButton from 'material-ui/RaisedButton'
 import SearchChannels from './SearchChannels'
 import axios from 'axios'
-import { win32 } from 'path';
+import Chip from 'material-ui/Chip';
+
+const styles = {
+  chip: {
+    margin: 4,
+  }
+}
 
 
 export default class App extends Component {
@@ -71,7 +77,20 @@ export default class App extends Component {
       <SearchChannels addStream={this.handleAddStreamer} channels={this.state.allChannels} activeChannels={this.state.activeChannels} />
       {this.state.activeChannels.length ?
       <div style={{display: 'flex', justifyContent: "flex-right", width: "100vw"}}>
-        <div width="75vw">
+      <div width="75vw">
+        <div id="chips">
+        {this.state.activeChannels.map((channel, index) => {
+          return (
+            <Chip
+            key={index}
+            onRequestDelete={() => this.handleRemoveStreamer(channel)}
+            style={styles.chip}
+            >
+            {channel}
+            </Chip>
+          )
+        })}
+        </div>
         {this.state.activeChannels.map((channel, index) => {
           let muted = true
           if(index === 0) muted = false
@@ -87,9 +106,7 @@ export default class App extends Component {
           )
         })}
         </div>
-        <div className="chat" width="25vw">
           <Chat currentChat={this.state.currentChat}/>
-        </div>
       </div> : <h1 id="welcome">Welcome To Twitch Board</h1>
       }
       </div>
